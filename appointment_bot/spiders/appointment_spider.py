@@ -18,11 +18,14 @@ class AppointmentSpider(scrapy.Spider):
 
     def login(self, response):
         print(response)
-        URL = 'https://ais.usvisa-info.com/pt-br/niv/users/sign_in'
-        USER = os.environ.get("SCRAPY_USER")
-        PWD = os.environ.get("SCRAPY_PWD")
+        url = 'https://ais.usvisa-info.com/pt-br/niv/users/sign_in'
+        user = os.environ.get("SCRAPY_USER")
+        pwd = os.environ.get("SCRAPY_PWD")
 
-        return FormRequest.from_response(response, formdata={"user[email]":USER,"user[password]":PWD, 
+        token = response.xpath("//meta/@content/").extract()
+        
+
+        return FormRequest.from_response(response, formdata={"user[email]":user,"user[password]":pwd, 
         "policy_confirmed":"1", "commit": "Acessar"}, callback=self.parse)
         
 
